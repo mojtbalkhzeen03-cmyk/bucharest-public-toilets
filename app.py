@@ -9,10 +9,10 @@ import time
 from streamlit_js_eval import get_geolocation
 
 # Page Configuration
-st.set_page_config(page_title="Bucharest Public Facilities Navigation", layout="wide")
+st.set_page_config(page_title="Bucharest Public Toilets", layout="wide")
 
-st.title("🗺️ Public Facilities Navigation System - Bucharest")
-st.write("Urban Economics Exercise: Automatically locating the nearest public facility based on your real-time location and drawing a direct path connection.")
+st.title("🗺️ Public Toilets System - Bucharest")
+st.write("Urban Economics Exercise: Automatically locating the nearest public Toilet based on your real-time location and drawing a direct path connection.")
 
 # Initialize the geocoding engine
 geolocator = Nominatim(user_agent="uauim_urban_app")
@@ -65,13 +65,13 @@ if user_geo and 'coords' in user_geo:
     # Calculate the geodesic distance between the user and all facilities in the CSV file
     df_clean['distance'] = df_clean.apply(lambda x: geodesic(my_coords, (x['lat'], x['lon'])).meters, axis=1)
     
-    # Select the closest facility (minimum distance)
+    # Select the closest toilet (minimum distance)
     nearest = df_clean.sort_values(by='distance').iloc[0]
     nearest_coords = (nearest['lat'], nearest['lon'])
     
     # Display results to the user / professor
-    st.info(f"🏃 The nearest facility is located at: **{nearest['address']}** ({nearest['name']})")
-    st.metric(label="📏 Precise Distance to Facility", value=f"{nearest['distance']:.0f} meters")
+    st.info(f"🏃 The nearest toilet is located at: **{nearest['address']}** ({nearest['name']})")
+    st.metric(label="📏 Precise Distance to the toilet", value=f"{nearest['distance']:.0f} meters")
     
     # Draw the interactive live map
     m = folium.Map(location=my_coords, zoom_start=15)
@@ -79,10 +79,10 @@ if user_geo and 'coords' in user_geo:
     # 1. Blue marker for the user's current live location
     folium.Marker(my_coords, popup="Your Current Location", icon=folium.Icon(color='blue', icon='user')).add_to(m)
     
-    # 2. Red marker for the nearest facility from the doctor's dataset
+    # 2. Red marker for the nearest toilet from the doctor's dataset
     folium.Marker(nearest_coords, popup=nearest['name'], icon=folium.Icon(color='red', icon='info-sign')).add_to(m)
     
-    # 3. Draw the line connecting your location to the nearest facility point
+    # 3. Draw the line connecting your location to the nearest toilet point
     folium.PolyLine(
         locations=[my_coords, nearest_coords], 
         color='blue', 
