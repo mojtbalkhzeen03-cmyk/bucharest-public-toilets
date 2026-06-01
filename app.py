@@ -8,7 +8,7 @@ from streamlit_js_eval import get_geolocation
 # 1. إعدادات الصفحة العامة للموقع
 st.set_page_config(page_title="Bucharest Public Toilets Network", layout="wide")
 
-st.title("🗺️ Smart Public Facilities Management System - Bucharest")
+st.title("🗺️ Public Toilets System - Bucharest By Mogtaba")
 st.write("An advanced GIS platform to visualize all urban facilities and compute the optimal path based on real-time location.")
 
 # 2. دالة قراءة وتنظيف البيانات المحدثة للإحداثيات العشرية
