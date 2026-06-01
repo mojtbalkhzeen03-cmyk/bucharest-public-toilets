@@ -8,7 +8,7 @@ from streamlit_js_eval import get_geolocation
 # 1. إعدادات الصفحة العامة للموقع
 st.set_page_config(page_title="Bucharest Public Toilets Network", layout="wide")
 
-st.title("🗺️ Public Toilets System - Bucharest By Mogtaba")
+st.title("🗺️ Public Toilets System - Bucharest -By Mogtaba")
 st.write("An advanced GIS platform to visualize all urban facilities and compute the optimal path based on real-time location.")
 
 # 2. دالة قراءة وتنظيف البيانات المحدثة للإحداثيات العشرية
@@ -115,8 +115,8 @@ for index, row in df_clean.iterrows():
     t_titlu = row.get('titlu', row.get('title', 'Toilet'))
     t_program = row.get('program', '-')
     t_taxa = row.get('taxa', '-')
-    t_access = row.get('Accesibil pentru persoane cu dizabilități', row.get('accessibility', '-'))
-    t_clean = row.get('Curățenie', row.get('cleanliness', '-'))
+    t_access = row.get('Accesibil pentru persoane cu dizabilitati', row.get('accessibility', '-'))
+    t_clean = row.get('Curatenie', row.get('cleanliness', '-'))
     t_tip = row.get('tip', row.get('type', '-'))
     
     # تنسيق نافذة الـ Popup بجميع التفاصيل التفصيلية التي قمت بإضافتها
