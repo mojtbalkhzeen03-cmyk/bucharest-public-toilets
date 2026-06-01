@@ -13,19 +13,33 @@ st.write("An advanced GIS platform to visualize all urban facilities and compute
 
 # Function to read the dataset with Romanian column names
 @st.cache_data
+# Function to read the dataset with Romanian column names safely
+@st.cache_data
 def process_data():
+    # محاولة قراءة الملف بالفاصلة العادية ثم بالفاصلة المنقوطة لتجنب أخطاء إكسل
     try:
-        df = pd.read_csv("Data.csv", encoding="utf-8")
+        df = pd.read_csv("Data.csv", encoding="utf-8", sep=None, engine='python')
     except:
-        df = pd.read_csv("Data.csv", encoding="latin1")
+        df = pd.read_csv("Data.csv", encoding="latin1", sep=None, engine='python')
     
-    # تحويل الإحداثيات الرومانية إلى أرقام عشرية يفهمها بايثون
-    df['Latitude Nordică'] = pd.to_numeric(df['Latitude Nordică'], errors='coerce')
-    df['Longitude Estică'] = pd.to_numeric(df['Longitude Estică'], errors='coerce')
+    # تنظيف أسماء الأعمدة من أي مسافات زائدة مخفية في الإكسل
+    df.columns = df.columns.str.strip()
     
-    # حذف أي سطر لا يحتوي على إحداثيات صحيحة
+    # طباعة أسماء الأعمدة في لوحة تحكم المطورين للتأكد منها
+    st.sidebar.write("📋 Detected columns in your file:", list(df.columns))
+    
+    # البحث عن الأعمدة الصحيحة حتى لو اختلفت الحروف الرومانية الخاصة
+    lat_col = [col for col in df.columns if 'Latitude' in col or 'lat' in col.lower()][0]
+    lon_col = [col for col in df.columns if 'Longitude' in col or 'lon' in col.lower()][0]
+    
+    # تحويل الإحداثيات إلى أرقام عشرية يفهمها بايثون باستخدام الأسماء المكتشفة
+    df[lat_col] = pd.to_numeric(df[lat_col], errors='coerce')
+    df[lon_col] = pd.to_numeric(df[lon_col], errors='coerce')
+    
+    # إعادة تسمية الأعمدة داخلياً لتسهيل عمل بقية الكود دون أخطاء
+    df = df.rename(columns={lat_col: 'Latitude Nordică', lon_col: 'Longitude Estică'})
+    
     return df.dropna(subset=['Latitude Nordică', 'Longitude Estică']).copy()
-
 # Load Database
 df_clean = process_data()
 
