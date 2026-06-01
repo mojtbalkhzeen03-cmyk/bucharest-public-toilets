@@ -21,7 +21,7 @@ geolocator = Nominatim(user_agent="uauim_urban_app")
 @st.cache_data
 def process_data():
     # Using cp1252 to handle Romanian characters safely from Excel without errors
-    df = pd.read_csv("Data.csv", encoding="cp1252")
+    df = pd.read_csv("Data.csv", encoding="utf-8", errors="ignore")
     lats, lons = [], []
     
     st.write("🔄 Reading facility addresses and converting to geographic coordinates...")
