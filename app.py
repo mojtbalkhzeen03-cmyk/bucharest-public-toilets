@@ -42,7 +42,7 @@ def process_data():
         
     df['lat'] = lats
     df['lon'] = lons
-    return df.dropna(subset=['lat', 'lon'])
+    return df.dropna(subset=['lat', 'lon']).copy()
 
 # Run the data processor
 df_clean = process_data()
